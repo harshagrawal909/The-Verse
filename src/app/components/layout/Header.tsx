@@ -26,7 +26,7 @@ export default function Header() {
   
     useEffect(() => {
         const checkAuth = async () => {
-          const nextAuthToken = session?.token;
+          const nextAuthToken = (session as any)?.token;
           const config = nextAuthToken 
             ? { headers: { Authorization: `Bearer ${nextAuthToken}` } }
             : {};

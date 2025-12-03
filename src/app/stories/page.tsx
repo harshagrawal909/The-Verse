@@ -32,7 +32,7 @@ export default function StoriesPage() {
 
      useEffect(() => {
         const checkAuth = async () => {
-          const nextAuthToken = session?.token;
+          const nextAuthToken = (session as any)?.token;
           const config = nextAuthToken
             ? { headers: { Authorization: `Bearer ${nextAuthToken}` } }
             : {};
@@ -52,7 +52,7 @@ export default function StoriesPage() {
     useEffect(()=>{
       const fetchStories = async () => {
         setLoading(true);
-        const nextAuthToken = session?.token;
+        const nextAuthToken = (session as any)?.token;
         const config = nextAuthToken ? { headers: { Authorization: `Bearer ${nextAuthToken}` } } : {};
         try {
           const response = await axios.get('/api/stories/fetch-data',config);

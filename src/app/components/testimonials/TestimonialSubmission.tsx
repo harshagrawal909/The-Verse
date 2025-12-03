@@ -27,7 +27,7 @@ const TestimonialSubmission: React.FC<TestimonialSubmissionProps> = ({ onSubmiss
         setIsLoading(true);
         setMessage('');
 
-        const nextAuthToken = session?.token;
+        const nextAuthToken = (session as any)?.token;
         const config = nextAuthToken 
             ? { headers: { Authorization: `Bearer ${nextAuthToken}` } } 
             : {};

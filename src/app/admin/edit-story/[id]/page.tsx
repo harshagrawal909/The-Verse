@@ -85,7 +85,7 @@ const useEditStoryForm = (storyId: string) => {
         const fetchStoryData = async () => {
             setError(null);
             setIsLoading(true);
-            const nextAuthToken = session?.token;
+            const nextAuthToken = (session as any)?.token;
             const config = nextAuthToken ? { headers: { Authorization: `Bearer ${nextAuthToken}` } } : {};
             
             try {
@@ -193,7 +193,7 @@ const useEditStoryForm = (storyId: string) => {
 
         try {
             const coverImageUrl = await uploadImage(storyData.coverImage);
-            const nextAuthToken = session?.token;
+            const nextAuthToken = (session as any)?.token;
             const config = nextAuthToken 
                 ? { headers: { Authorization: `Bearer ${nextAuthToken}` } } 
                 : {};
@@ -237,7 +237,7 @@ const useEditStoryForm = (storyId: string) => {
         setError(null);
         setIsLoading(true);
 
-        const nextAuthToken = session?.token;
+        const nextAuthToken = (session as any)?.token;
             const config = nextAuthToken 
                 ? { headers: { Authorization: `Bearer ${nextAuthToken}` } } 
                 : {};

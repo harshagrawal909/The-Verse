@@ -140,7 +140,7 @@ export default function AboutPage() {
     });
     
     const icon_size=24;
-    const nextAuthToken = session?.token;
+    const nextAuthToken = (session as any)?.token;
     
     // 0. Fetch Global Config
     useEffect(() => {
