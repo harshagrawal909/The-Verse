@@ -9,7 +9,7 @@ import { signIn } from "next-auth/react";
 import GoogleIcon from "../components/icons/GoogleIcon";
 import FacebookIcon from "../components/icons/FacebookIcon";
 
-export default function signup(){
+export default function Signup(){
     const router = useRouter()
     const [showPassword, setShowPassword] = useState(false);
     const [user,setUser]= useState({

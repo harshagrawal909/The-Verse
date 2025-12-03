@@ -105,8 +105,9 @@ const useEditStoryForm = (storyId: string) => {
                     isSeries: story.isSeries,
                     seriesName: story.seriesName || ''
                 });
-            } catch (err) {
-                const message = (err as any).response?.data?.message || (err as Error).message || "Failed to fetch story.";
+            } catch (err: any) {
+                const message = err.response?.data?.message || err.message || "Failed to fetch story.";
+                setError(message);
                 setError(message);
                 router.push('/stories'); // Redirect on failure
             } finally {
@@ -219,8 +220,9 @@ const useEditStoryForm = (storyId: string) => {
             alert(`Story "${storyData.title}" successfully updated as ${targetStatus}!`);
             router.push('/stories');
 
-        } catch (err) {
-            const message = (err as any).response?.data?.message || (err as Error).message || "An unexpected error occurred during update.";
+        } catch (err: any) {
+            const message = err.response?.data?.message || err.message || "An unexpected error occurred during update.";
+            setError(message);
             setError(message);
         } finally {
             setIsLoading(false);
@@ -251,8 +253,9 @@ const useEditStoryForm = (storyId: string) => {
             alert(`Story successfully deleted!`);
             router.push('/stories');
 
-        } catch (err) {
-            const message = (err as any).response?.data?.message || (err as Error).message || "An unexpected error occurred during deletion.";
+        } catch (err : any) {
+            const message = err.response?.data?.message || err.message || "An unexpected error occurred during deletion.";
+            setError(message);
             setError(message);
         } finally {
             setIsLoading(false);

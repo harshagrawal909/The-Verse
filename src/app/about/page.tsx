@@ -97,7 +97,7 @@ const AdminTestimonialManager = ({ allTestimonials, fetchAllTestimonials, fetchP
                                     {t.isPublished ? 'PUBLISHED' : 'UNAPPROVED'}
                                 </span>
                             </div>
-                            <p className="text-lg italic text-[#1E2A28] mt-1 line-clamp-2">"{t.opinion}"</p>
+                            <p className="text-lg italic text-[#1E2A28] mt-1 line-clamp-2">&quot;{t.opinion}&quot;</p>
                             <p className="text-sm text-[#3A3A37] mt-1">- {t.authorName}, {t.authorTitle}</p>
                         </div>
                         
@@ -322,7 +322,7 @@ export default function AboutPage() {
                                 {displayStaticStars(review.rating)}
                             </div>
                             <p className="text-[#3A3A37] text-md italic mb-4 flex-grow">
-                                "{review.opinion}"
+                                &quot;{review.opinion}&quot;
                             </p>
                             <p className="text-[#1E2A28] text-sm font-semibold mt-auto">
                                 - {review.authorName}, {review.authorTitle}

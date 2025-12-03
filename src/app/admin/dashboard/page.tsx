@@ -218,8 +218,8 @@ export default function AdminDashboardPage() {
             setConfigData(response.data.config);
             setSuccessMessage("Global site configuration saved successfully!");
 
-        } catch (err) {
-            setError((err as any).response?.data?.message || "Failed to save configuration.");
+        } catch (err: any) {
+            setError(err.response?.data?.message || "Failed to save configuration.");
         } finally {
             setIsSaving(false);
         }

@@ -10,7 +10,7 @@ import {useRouter} from "next/navigation"
 import { signIn } from "next-auth/react";
 
 
-export default function login(){
+export default function Login(){
     const [showPassword, setShowPassword] = useState(false);
     const [user,setUser]= useState({email:"",password:""})
 
