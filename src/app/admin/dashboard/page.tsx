@@ -111,7 +111,7 @@ export default function AdminDashboardPage() {
                 const configResponse = await axios.get('/api/admin/config');
                 setConfigData(configResponse.data.config);
 
-            } catch (err) {
+            } catch (err: any) {
                 console.error("Dashboard Load Error:", err);
                 // Assume 401/403 means user is not admin or token expired
                 router.push('/login'); 
@@ -392,7 +392,7 @@ export default function AdminDashboardPage() {
                                     <p className="text-sm text-[#4E7C68] mt-2">Selected: {newAuthorImageFile.name}</p>
                                 )}
                                 <p className="text-xs text-[#3A3A37] mt-1">
-                                    Select a new image here. It will be uploaded and saved when you click "Save Global Config".
+                                    Select a new image here. It will be uploaded and saved when you click &quot;Save Global Config&quot;.
                                 </p>
                             </div>
                         </div>

@@ -12,7 +12,7 @@ const CommunityCTA = () => {
           Join The Verse Community
         </h2>
         <p className="text-lg text-[#3A3A37] max-w-2xl mx-auto mb-12">
-          Become a part of Harsh's writing journey! Sign up to receive exclusive updates, 
+          Become a part of Harsh&apos;s writing journey! Sign up to receive exclusive updates, 
           participate in discussions, and snag early access to his stories. Your insights fuel the narrative.
         </p>
 

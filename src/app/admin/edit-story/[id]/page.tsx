@@ -253,7 +253,7 @@ const useEditStoryForm = (storyId: string) => {
             alert(`Story successfully deleted!`);
             router.push('/stories');
 
-        } catch (err : any) {
+        } catch (err: any) {
             const message = err.response?.data?.message || err.message || "An unexpected error occurred during deletion.";
             setError(message);
             setError(message);
