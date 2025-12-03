@@ -14,7 +14,7 @@ export default function Home() {
     if (window.location.hash === '#_=_') {
       const cleanUrl = window.location.pathname + window.location.search;
       
-      router.replace(cleanUrl, { shallow: true });
+      router.replace(cleanUrl);
     }
   }, [router]);
   return (
