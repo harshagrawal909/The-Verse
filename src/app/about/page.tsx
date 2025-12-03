@@ -49,7 +49,7 @@ const AdminTestimonialManager = ({ allTestimonials, fetchAllTestimonials, fetchP
             });
             alert("Testimonial deleted successfully!");
             fetchAllTestimonials();
-            fetchPublishedTestimonials(); // Refresh public list immediately
+            fetchPublishedTestimonials(); 
         } catch (error) {
             console.error("Delete failed:", error);
             alert("Failed to delete testimonial.");
@@ -73,7 +73,7 @@ const AdminTestimonialManager = ({ allTestimonials, fetchAllTestimonials, fetchP
             );
             alert(`Testimonial successfully ${testimonial.isPublished ? 'unpublished' : 'published'}!`);
             fetchAllTestimonials();
-            fetchPublishedTestimonials(); // Refresh public list immediately
+            fetchPublishedTestimonials(); 
         } catch (error) {
             console.error("Publish toggle failed:", error);
             alert("Failed to update testimonial status.");
@@ -136,7 +136,7 @@ export default function AboutPage() {
     const [config, setConfig] = useState<ConfigData>({
         aboutSummary: 'Loading summary...',
         aboutBioLong: 'Loading bio...',
-        authorImageUrl: '/images/admin.jpg'
+        authorImageUrl: ''
     });
     
     const icon_size=24;
@@ -234,7 +234,7 @@ export default function AboutPage() {
                             <div className="relative w-full max-w-[250px] h-[300px] rounded-lg overflow-hidden shadow-lg border-4 border-[#E3D8B5]">
                                 <img
                                     src={config.authorImageUrl }
-                                    alt="Aria Montgomery, the Author"
+                                    alt="The Author"
                                     className="w-full h-full object-cover"
                                 />
                             </div>

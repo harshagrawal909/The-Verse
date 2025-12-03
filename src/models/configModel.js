@@ -30,7 +30,7 @@ const configSchema = new mongoose.Schema({
     
     authorImageUrl: {
         type: String,
-        default: "/images/admin.jpg" 
+        default: "" 
     },
     
     adminProfileImage: {
