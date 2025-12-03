@@ -1,12 +1,11 @@
 import { NextResponse, NextRequest } from "next/server";
-import Config from "@/models/configModel.js"
+import ConfigModule from "@/models/configModel.js"
 import User from "@/models/userModel.js"
 import { connect } from "@/dbConfig/dbConfig";
 import { getDataFromToken } from "@/utils/authMiddleware";
-
+const Config = ConfigModule as any;
 connect();
 
-// GET /api/admin/config - Fetches global configuration (Accessible by anyone)
 export async function GET() {
     try {
         let config = await Config.findOne({ configId: 'global' });
@@ -27,7 +26,6 @@ export async function GET() {
     }
 }
 
-// PUT /api/admin/config - Updates global configuration (Admin only)
 export async function PUT(request: NextRequest) {
     try {
         const userId = await getDataFromToken(request);
