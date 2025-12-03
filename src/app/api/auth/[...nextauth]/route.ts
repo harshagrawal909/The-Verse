@@ -1,10 +1,10 @@
-import NextAuth from "next-auth"
+import NextAuth,{AuthOptions} from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import FacebookProvider from "next-auth/providers/facebook"
 import axios from "axios" 
 import jwt from "jsonwebtoken";
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -17,6 +17,7 @@ export const authOptions = {
   ],
   callbacks: {
     async signIn({ user, account, profile }) {
+      const userWithCustomToken = user as any;
       const { email, name, image } = user;
       const provider = account?.provider || "credentials";
 
@@ -34,11 +35,11 @@ export const authOptions = {
         });
         console.log(`[NextAuth] Backend API status: ${response.status}`);
         if (response.status === 200 || response.status === 201) {
-          user.customToken = response.data.token;
+          userWithCustomToken.customToken = response.data.token;
           return true;
         }
 
-      } catch (error) {
+      } catch (error: any) {
          if (axios.isAxiosError(error) && error.response) {
             console.error(
                 `[NextAuth ERROR] Social login API failed: Status ${error.response.status}`, 
@@ -53,18 +54,18 @@ export const authOptions = {
       return false;
     },
   
-  async jwt({ token, user, account, profile }) {
-      if (user?.customToken) {
-        token.token = user.customToken; 
-      }
-      return token;
-  },
-  async session({ session, token, user }) {
-      if (token.token) {
-        session.token = token.token;
-      }
-      return session;
+    async jwt({ token, user, account, profile }) {
+        if ((user as any)?.customToken) {
+          token.token = (user as any).customToken; 
+        }
+        return token;
     },
+    async session({ session, token, user }) {
+        if (token.token) {
+          (session as any).token = token.token;
+        }
+        return session;
+      },
   },
 
   session: {
