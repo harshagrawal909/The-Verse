@@ -19,7 +19,7 @@ interface NormalUserProps {
   stories?: Story[]; 
 }
 
-const WritingCard = ({ title, genre, description, image, rating, storyId, isSeries, seriesName, averageRating, ratingCount}) => (
+const WritingCard = ({ title, genre, description, image, storyId, isSeries, seriesName, averageRating, ratingCount}) => (
   <div className="bg-[#FDF4E2] text-[#1E2A28] p-6 rounded-2xl shadow-lg flex flex-col border border-[#E3D8B5] transition duration-300 hover:shadow-xl hover:-translate-y-1">
     
     
@@ -182,7 +182,6 @@ export default function NormalUser({ stories = [] }: NormalUserProps) {
                 genre={story.genre} 
                 description={story.description} 
                 image={story.coverImage}
-                rating={story.rating}
                 storyId={story._id}
                 isSeries={story.isSeries}
                 seriesName={story.seriesName}
