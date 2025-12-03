@@ -187,7 +187,7 @@ const EditPictureModal: React.FC<EditPictureModalProps> = ({ user, onClose, onUp
         return () => {
             if (previewUrl && previewUrl !== user.avatar) URL.revokeObjectURL(previewUrl);
         };
-    }, [selectedFile]);
+    }, [selectedFile, previewUrl, user.avatar]);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {

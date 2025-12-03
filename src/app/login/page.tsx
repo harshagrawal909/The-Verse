@@ -168,7 +168,7 @@ export default function Login(){
                 </div>
 
                 <div className="mt-8 text-sm">
-                    Don't have an account? 
+                    Don&apos;t have an account? 
                     <Link href="/signup" className="text-[#636AE8FF] font-medium hover:underline ml-1">
                         Sign Up
                     </Link>
