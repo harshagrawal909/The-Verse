@@ -1,8 +1,11 @@
 import { NextResponse, NextRequest } from "next/server";
-import Story from "@/models/storyModel.js"
 import { connect } from "@/dbConfig/dbConfig";
 import { getDataFromToken } from "@/utils/authMiddleware";
-import User from '@/models/userModel.js'; 
+import UserModule from '@/models/userModel.js'; 
+import StoryModule from "@/models/storyModel.js"
+
+const User = UserModule as any;
+const Story = StoryModule as any;
 
 connect();
 

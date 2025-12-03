@@ -1,8 +1,12 @@
 import { NextResponse,NextRequest } from "next/server";
-import User from "@/models/userModel.js"
 import { connect } from "@/dbConfig/dbConfig";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import UserModule from "@/models/userModel.js"
+
+const User = UserModule as any
+
+
 connect()
 export async function POST(request:NextRequest){
     try{

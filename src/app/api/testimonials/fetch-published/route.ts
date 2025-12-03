@@ -1,6 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
-import Testimonial from "@/models/testimonialModel.js"
+import TestimonialModule from "@/models/testimonialModel.js"
 import { connect } from "@/dbConfig/dbConfig";
+
+const Testimonial = TestimonialModule as any
 
 connect();
 

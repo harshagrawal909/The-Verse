@@ -1,9 +1,10 @@
-// src/app/api/users/update-profile-picture/route.ts
 
 import { NextResponse, NextRequest } from "next/server";
-import User from "@/models/userModel.js"
 import { connect } from "@/dbConfig/dbConfig";
 import { getDataFromToken } from "@/utils/authMiddleware";
+import UserModule from "@/models/userModel.js"
+
+const User = UserModule as any
 
 connect();
 

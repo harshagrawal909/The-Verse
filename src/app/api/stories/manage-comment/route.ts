@@ -1,10 +1,11 @@
-// src/app/api/stories/manage-comment/route.ts
 
 import { NextResponse, NextRequest } from "next/server";
-import Story from "@/models/storyModel.js"
 import { connect } from "@/dbConfig/dbConfig";
 import { getDataFromToken } from "@/utils/authMiddleware";
 import mongoose from 'mongoose';
+import StoryModule from "@/models/storyModel.js"
+
+const Story = StoryModule as any
 
 connect();
 

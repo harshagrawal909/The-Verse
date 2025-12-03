@@ -1,8 +1,10 @@
 
 import { NextResponse, NextRequest } from "next/server";
 import { connect } from "@/dbConfig/dbConfig";
-import User from "@/models/userModel";
 import { getDataFromToken } from "@/utils/authMiddleware";
+import UserModule from "@/models/userModel.js"
+
+const User = UserModule as any
 
 connect();
 

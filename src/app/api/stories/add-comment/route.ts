@@ -1,9 +1,12 @@
 import { NextResponse, NextRequest } from "next/server";
-import Story from "@/models/storyModel.js"
-import User from "@/models/userModel.js"
 import { connect } from "@/dbConfig/dbConfig";
 import { getDataFromToken } from "@/utils/authMiddleware";
 import mongoose from 'mongoose';
+import StoryModule from "@/models/storyModel.js"
+import UserModule from "@/models/userModel.js"
+
+const Story = StoryModule as any
+const User = UserModule as any
 
 connect();
 

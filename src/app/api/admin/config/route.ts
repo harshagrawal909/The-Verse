@@ -1,9 +1,11 @@
 import { NextResponse, NextRequest } from "next/server";
 import ConfigModule from "@/models/configModel.js"
-import User from "@/models/userModel.js"
+import UserModule from "@/models/userModel.js"
 import { connect } from "@/dbConfig/dbConfig";
 import { getDataFromToken } from "@/utils/authMiddleware";
+
 const Config = ConfigModule as any;
+const User = UserModule as any;
 connect();
 
 export async function GET() {

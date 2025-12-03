@@ -1,10 +1,12 @@
-// src/app/api/stories/fetch-single/route.ts
 
 import { NextResponse, NextRequest } from 'next/server';
 import { connect } from "@/dbConfig/dbConfig";
-import Story from '@/models/storyModel.js';
-import User from '@/models/userModel.js';
 import { getDataFromToken } from '@/utils/authMiddleware';
+import StoryModule from "@/models/storyModel.js"
+import UserModule from "@/models/userModel.js"
+
+const Story = StoryModule as any
+const User = UserModule as any
 
 connect();
 

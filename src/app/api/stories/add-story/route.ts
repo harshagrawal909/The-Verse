@@ -1,6 +1,8 @@
 import { NextResponse,NextRequest } from "next/server";
-import Story from "@/models/storyModel.js"
 import { connect } from "@/dbConfig/dbConfig";
+import StoryModule from "@/models/storyModel.js"
+
+const Story = StoryModule as any
 
 
 export async function POST(request:NextRequest){
