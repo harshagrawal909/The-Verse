@@ -2,7 +2,6 @@
 "use client"
 import { Mail, Phone, MapPin, Instagram, Linkedin, Github, Star, Trash2, Edit, CheckCircle, XCircle } from 'lucide-react';
 import Link from "next/link";
-import Image from 'next/image'; 
 import TestimonialSubmission from '../components/testimonials/TestimonialSubmission';
 import { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
@@ -233,7 +232,7 @@ export default function AboutPage() {
                         <div className="lg:w-1/4 flex justify-center lg:justify-end">
                             <div className="relative w-full max-w-[250px] h-[300px] rounded-lg overflow-hidden shadow-lg border-4 border-[#E3D8B5]">
                                 <img
-                                    src={config.authorImageUrl }
+                                    src={config.authorImageUrl || "/images/admin.jpg"}
                                     alt="The Author"
                                     className="w-full h-full object-cover"
                                 />
