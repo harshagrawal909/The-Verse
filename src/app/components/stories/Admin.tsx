@@ -123,6 +123,12 @@ export default function Admin({ stories = [] }: AdminProps) {
     return (
       <div className="min-h-screen bg-[#FEF8EC] flex items-center justify-center text-[#3C2A21] font-serif">
         <p>No stories found yet. Time to add one!</p>
+        <Link 
+                href="/admin/add-story" 
+                className="flex items-center px-6 py-3 text-lg font-semibold rounded-lg bg-[#B7860B] text-white shadow-md hover:bg-[#996C08] transition duration-300 whitespace-nowrap mt-2"
+            >
+                <span className="mr-2">+</span> Add Story
+            </Link>
       </div>
     );
   }
