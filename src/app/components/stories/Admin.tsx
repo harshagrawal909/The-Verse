@@ -121,7 +121,7 @@ export default function Admin({ stories = [] }: AdminProps) {
 
   if (!stories.length) {
     return (
-      <div className="min-h-screen bg-[#FEF8EC] flex items-center justify-center text-[#3C2A21] font-serif">
+      <div className="min-h-screen  flex items-center justify-center text-[#3C2A21] font-serif">
         <p>No stories found yet. Time to add one!</p>
         <Link 
                 href="/admin/add-story" 
