@@ -295,7 +295,6 @@ export default function ProfilePage() {
 
   const nextAuthToken = (session as any)?.token as string | undefined;
 
-  // 1. Fetch User Data and Handle Auth
   useEffect(() => {
     if (status === 'loading') return;
 
@@ -323,7 +322,6 @@ export default function ProfilePage() {
   }, [status, nextAuthToken, router]);
 
 
-  // 2. Handle Logout
   const handleLogout = async () => {
     try {
         await axios.post('/api/users/logout');
@@ -334,13 +332,10 @@ export default function ProfilePage() {
     }
   };
   
-  // 3. Handle User Data Update from Modal
   const handleUserUpdate = (updatedUser: UserData) => {
       setUser(updatedUser);
   };
 
-
-  // --- Loading State ---
   if (isLoading || status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center text-[#B7860B] text-2xl font-serif">
@@ -358,7 +353,6 @@ export default function ProfilePage() {
   }
 
 
-  // --- Main Content ---
   const displayName = user.name || user.username || "Verified Reader";
 
   return (
@@ -385,9 +379,9 @@ export default function ProfilePage() {
 
 
         {/* Welcome Section */}
-        <div className="bg-[#FEF8ECFF] p-8 sm:p-10 rounded-xl shadow-lg border border-[#E3D8B5] mb-12 flex items-center justify-between">
+        <div className="bg-[#FEF8ECFF] p-8 sm:p-10 rounded-xl shadow-lg border border-[#E3D8B5] mb-12 flex flex-col items-start sm:flex-row sm:items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-[#1E2A28] to-[#4E7C68] bg-clip-text text-transparent mb-2">
+            <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#1E2A28] to-[#4E7C68] bg-clip-text text-transparent mb-2">
               Welcome Back, {displayName}!
             </h1>
             <p className="text-lg text-[#3A3A37] max-w-md">
@@ -404,8 +398,8 @@ export default function ProfilePage() {
 
         {/* Profile Details & Edit Button */}
         <div className="bg-[#FFFDF8] p-8 rounded-xl shadow-md border border-[#E3D8B5] mb-10">
-            <div className="flex justify-between items-center mb-6 border-b border-[#E3D8B5] pb-3">
-                <h2 className="text-2xl font-semibold text-[#1E2A28]">Your Profile</h2>
+            <div className="flex flex-col  sm:flex-row justify-between items-start sm:items-center mb-6 border-b border-[#E3D8B5] pb-3">
+                <h2 className="text-2xl font-semibold text-[#1E2A28] mb-2 sm:mb-0">Your Profile</h2>
                 <div className="flex space-x-4">
                     <button 
                         onClick={() => setIsEditing(true)} 

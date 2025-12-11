@@ -8,7 +8,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     return (
         <SessionProvider>
             <Header /> 
-            <main className="bg-[#F9F6F1FF] min-h-screen py-20">
+            <main className="bg-[#F9F6F1FF] min-h-screen py-20 sm:px-6">
                 {children}
             </main>
             <Footer />

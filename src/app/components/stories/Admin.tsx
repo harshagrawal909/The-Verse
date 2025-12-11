@@ -137,7 +137,7 @@ export default function Admin({ stories = [] }: AdminProps) {
     <section className="min-h-screen pt-12 ">
       <div className="max-w-6xl mx-auto px-8">
 
-        <div className="flex justify-between items-start mb-12">
+        <div className="flex flex-col lg:flex-row justify-between items-start mb-12">
             <div>
                 <h2 className="text-5xl font-bold bg-gradient-to-r from-[#1E2A28] to-[#4E7C68] bg-clip-text text-transparent mb-4 pb-2">
                     Manage Stories
@@ -149,17 +149,17 @@ export default function Admin({ stories = [] }: AdminProps) {
             
             <Link 
                 href="/admin/add-story" 
-                className="flex items-center px-6 py-3 text-lg font-semibold rounded-lg bg-[#B7860B] text-white shadow-md hover:bg-[#996C08] transition duration-300 whitespace-nowrap mt-2"
+                className="flex items-center px-6 py-3 text-lg font-semibold rounded-lg bg-[#B7860B] text-white shadow-md hover:bg-[#996C08] transition duration-300 whitespace-nowrap mt-4 lg:mt-2"
             >
                 <span className="mr-2">+</span> Add Story
             </Link>
         </div>
 
-        <div className="flex flex-wrap justify-between items-center mb-10 p-4 border-y border-[#E3D8B5]">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row flex-wrap justify-between items-center mb-10 p-0 sm:p-4 border-y border-[#E3D8B5] gap-4">
+          <div className="flex items-center gap-4 w-full sm:w-auto">
             <label className="text-[#3A3A37] font-medium">Filter by Genre:</label>
             <select
-              className="px-3 py-2 bg-[#FEF8EC] border border-[#E3D8B5] rounded-lg text-[#1E2A28] focus:outline-none focus:ring-2 focus:ring-[#B7860B]"
+              className="px-3 py-2 bg-[#FEF8EC] border border-[#E3D8B5] rounded-lg text-[#1E2A28] focus:outline-none focus:ring-2 focus:ring-[#B7860B] w-1/2 sm:w-auto"
               value={selectedGenre}
               onChange={(e) => setSelectedGenre(e.target.value)}
             >
@@ -172,10 +172,10 @@ export default function Admin({ stories = [] }: AdminProps) {
           </div>
 
           {seriesNames.length > 1 && (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 w-full sm:w-auto">
               <label className="text-[#3A3A37] font-medium">Filter By Series</label>
               <select
-                  className="px-3 py-2 bg-[#FEF8EC] border border-[#E3D8B5] rounded-lg text-[#1E2A28] focus:outline-none focus:ring-2 focus:ring-[#B7860B]"
+                  className="px-3 py-2 bg-[#FEF8EC] border border-[#E3D8B5] rounded-lg text-[#1E2A28] focus:outline-none focus:ring-2 focus:ring-[#B7860B] w-1/2 sm:w-auto"
                   value={selectedSeries}
                   onChange={(e) => setSelectedSeries(e.target.value)}
                 >
@@ -189,10 +189,10 @@ export default function Admin({ stories = [] }: AdminProps) {
             </div>
           )}
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 w-full sm:w-auto">
             <label className="text-[#3A3A37] font-medium">Sort by:</label>
             <select
-              className="px-3 py-2 bg-[#FEF8EC] border border-[#E3D8B5] rounded-lg text-[#1E2A28] focus:outline-none focus:ring-2 focus:ring-[#B7860B]"
+              className="px-3 py-2 bg-[#FEF8EC] border border-[#E3D8B5] rounded-lg text-[#1E2A28] focus:outline-none focus:ring-2 focus:ring-[#B7860B] w-1/2 sm:w-auto"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
             >

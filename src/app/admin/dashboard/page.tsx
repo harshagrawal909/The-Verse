@@ -1,5 +1,3 @@
-// src/app/admin/dashboard/page.tsx
-
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -78,7 +76,6 @@ export default function AdminDashboardPage() {
         authorImageUrl: '',
     });
 
-    // NEW STATE: For the file selected for the About Page Author Image
     const [newAuthorImageFile, setNewAuthorImageFile] = useState<File | null>(null);
 
     const [userData, setUserData] = useState<UserData | null>(null);
@@ -87,9 +84,8 @@ export default function AdminDashboardPage() {
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
-    const nextAuthToken = (session as any)?.token; // Use type assertion for session token
+    const nextAuthToken = (session as any)?.token; 
 
-    // 1. Initial Fetch (User and Config)
     useEffect(() => {
         if (status === 'loading') return;
         
@@ -131,8 +127,6 @@ export default function AdminDashboardPage() {
 
     const uploadImage = async (file: File | null): Promise<string> => {
         if (!file) {
-            // Return empty string or current image URL, but for config fields
-            // it's safer to ensure a file is always passed if uploading
             throw new Error("No file provided for upload.");
         }
 
@@ -159,7 +153,6 @@ export default function AdminDashboardPage() {
         }
     };
     
-    // 2. Profile Picture Update Logic (Remains the same)
     const handleProfileImageUpdate = async () => {
         if (!newProfileImageFile || !userData) return;
 
@@ -187,7 +180,6 @@ export default function AdminDashboardPage() {
         }
     };
 
-    // 3. Global Config Update Logic (MODIFIED)
     const handleConfigSave = async () => {
         setIsSaving(true);
         setError(null);
@@ -270,7 +262,6 @@ export default function AdminDashboardPage() {
                     </div>
                 )}
 
-                {/* MANAGEMENT LINKS */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                     <AdminCard
                         Icon={BookOpen}
@@ -299,7 +290,7 @@ export default function AdminDashboardPage() {
                     <p className='text-[#1E2A28] mb-6 border-b border-[#E3D8B5] pb-2'>Change the profile picture displayed in the header dropdown.</p>
 
                     <div className="flex items-center space-x-8">
-                        <div className="flex flex-col items-center">
+                        <div className="flex flex-col sm:flex-row items-center space-x-0 sm:space-x-8 space-y-4 sm:space-y-0">
                             <p className="text-sm text-[#3A3A37] mb-2">Current Image</p>
                             <img 
                                 src={userData.avatar} 
@@ -310,7 +301,7 @@ export default function AdminDashboardPage() {
                             />
                         </div>
 
-                        <div className="flex-1">
+                        <div className="flex-1 w-full">
                             <label className="block text-lg font-medium text-[#1E2A28] mb-2">Upload New Image</label>
                             <input
                                 type="file"
@@ -334,7 +325,6 @@ export default function AdminDashboardPage() {
                 </div>
 
 
-                {/* GLOBAL CONTENT MANAGER */}
                 <div className="bg-[#FEF8ECFF] p-6 sm:p-8 rounded-xl shadow-lg border border-[#E3D8B5]">
                     <h2 className="text-2xl font-semibold text-[#1E2A28] pb-2">Global Site Content</h2>
                     <p className='text-[#1E2A28] mb-8 border-b border-[#E3D8B5] pb-2'>Customize the main text blocks across the site.</p>
@@ -367,7 +357,7 @@ export default function AdminDashboardPage() {
                         </label>
                         
                         <div className="flex items-center space-x-6">
-                            <div className="flex flex-col items-center">
+                            <div className="flex flex-col sm:flex-row items-center space-x-0 sm:space-x-6 space-y-4 sm:space-y-0">
                                 <p className="text-sm text-[#3A3A37] mb-2">Current Image</p>
                                 <img 
                                     src={configData.authorImageUrl || "/images/admin.jpg"}
@@ -381,7 +371,7 @@ export default function AdminDashboardPage() {
                                 </p>
                             </div>
                             
-                            <div className="flex-1">
+                            <div className="flex-1 w-full">
                                 <input
                                     type="file"
                                     accept="image/*"

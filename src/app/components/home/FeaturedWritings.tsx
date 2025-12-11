@@ -145,7 +145,7 @@ const FeaturedWritings = () => {
     <section className="pt-12 rounded-t-3xl">
       <div className="max-w-6xl mx-auto px-8">
         <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold bg-gradient-to-r from-[#1E2A28] to-[#4E7C68] bg-clip-text text-transparent mb-4 pb-2">
+          <h2 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-[#1E2A28] to-[#4E7C68] bg-clip-text text-transparent mb-4 pb-2">
             Recent Stories
           </h2>
           <p className="text-lg text-[#3A3A37] max-w-3xl mx-auto">

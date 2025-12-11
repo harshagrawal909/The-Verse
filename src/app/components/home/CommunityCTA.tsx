@@ -6,9 +6,9 @@ const CommunityCTA = () => {
   return (
     <section className="py-4" id="community">
       <div 
-        className="max-w-4xl mx-auto p-12 rounded-3xl text-center shadow-xl bg-[#FEF8ECFF] border border-[#E3D8B5] "
+        className="max-w-4xl mx-auto p-8 sm:p-12 rounded-3xl text-center shadow-xl bg-[#FEF8ECFF] border border-[#E3D8B5] "
       >
-        <h2 className="text-5xl font-bold bg-gradient-to-r from-[#1E2A28] to-[#4E7C68] bg-clip-text text-transparent mb-6 pb-2">
+        <h2 className="text-5xl sm:text-5xl font-bold bg-gradient-to-r from-[#1E2A28] to-[#4E7C68] bg-clip-text text-transparent mb-6 pb-2">
           Join The Verse Community
         </h2>
         <p className="text-lg text-[#3A3A37] max-w-2xl mx-auto mb-12">

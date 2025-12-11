@@ -127,11 +127,11 @@ export default function NormalUser({ stories = [] }: NormalUserProps) {
             </p>
         </div>
 
-        <div className="flex flex-wrap justify-between items-center mb-12  p-4  ">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-wrap flex-col sm:flex-row justify-between items-center mb-12 p-0 sm:p-4 gap-4">
+          <div className="flex items-center gap-4 w-full sm:w-auto">
             <label className="text-[#3A3A37] font-medium">Filter by Genre:</label>
             <select
-              className="px-3 py-2 bg-[#FEF8EC] border border-[#E3D8B5] rounded-lg text-[#1E2A28] focus:outline-none focus:ring-2 focus:ring-[#B7860B]"
+              className="px-3 py-2 bg-[#FEF8EC] border border-[#E3D8B5] rounded-lg text-[#1E2A28] focus:outline-none focus:ring-2 focus:ring-[#B7860B] w-1/2 sm:w-auto"
               value={selectedGenre}
               onChange={(e) => setSelectedGenre(e.target.value)}
             >
@@ -144,10 +144,10 @@ export default function NormalUser({ stories = [] }: NormalUserProps) {
           </div>
 
           {seriesNames.length > 1 && (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 w-full sm:w-auto">
               <label className="text-[#3A3A37] font-medium">Filter By Series</label>
               <select
-                  className="px-3 py-2 bg-[#FEF8EC] border border-[#E3D8B5] rounded-lg text-[#1E2A28] focus:outline-none focus:ring-2 focus:ring-[#B7860B]"
+                  className="px-3 py-2 bg-[#FEF8EC] border border-[#E3D8B5] rounded-lg text-[#1E2A28] focus:outline-none focus:ring-2 focus:ring-[#B7860B] w-1/2 sm:w-auto"
                   value={selectedSeries}
                   onChange={(e) => setSelectedSeries(e.target.value)}
                 >
@@ -161,10 +161,10 @@ export default function NormalUser({ stories = [] }: NormalUserProps) {
             </div>
           )}
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 w-full sm:w-auto">
             <label className="text-[#3A3A37] font-medium">Sort by:</label>
             <select
-              className="px-3 py-2 bg-[#FEF8EC] border border-[#E3D8B5] rounded-lg text-[#1E2A28] focus:outline-none focus:ring-2 focus:ring-[#B7860B]"
+              className="px-3 py-2 bg-[#FEF8EC] border border-[#E3D8B5] rounded-lg text-[#1E2A28] focus:outline-none focus:ring-2 focus:ring-[#B7860B] w-1/2 sm:w-auto"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
             >

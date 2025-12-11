@@ -61,7 +61,7 @@ export default function Signup(){
     };
 
     return (
-        <div className="bg-[#FEF8ECFF] w-[385px] mx-auto 
+        <div className="bg-[#FEF8ECFF] max-w-sm w-full mx-auto 
                 shadow-[0px_0px_1px_#171a1f12,_0px_0px_2px_#171a1f1F] 
                 rounded-xl flex flex-col items-center 
                 pt-10 pb-8 my-10">
