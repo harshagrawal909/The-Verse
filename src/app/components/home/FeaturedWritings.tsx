@@ -13,6 +13,8 @@ interface Story {
   isFeatured: boolean;
   averageRating: number;
   ratingCount: number;
+  isSeries?: boolean;
+  seriesName?: string;
 }
 
 const WritingCard = ({
@@ -23,17 +25,40 @@ const WritingCard = ({
   storyId,
   averageRating,
   ratingCount,
+  isSeries,
+  seriesName,
+}: {
+  title: string;
+  genre: string;
+  description: string;
+  image: string;
+  storyId: string;
+  averageRating: number;
+  ratingCount: number;
+  isSeries?: boolean;
+  seriesName?: string;
 }) => (
   <div className="bg-[#FDF4E2] text-[#1E2A28] p-6 rounded-2xl shadow-lg flex flex-col border border-[#E3D8B5] transition duration-300 hover:shadow-xl hover:-translate-y-1">
-    <div className="w-full h-48 mb-4 rounded-md overflow-hidden">
+    <div className="w-full h-48 mb-4 rounded-md overflow-hidden relative">
       <img
         src={image}
         alt={title}
         className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
       />
+      {isSeries && (
+        <span className="absolute top-3 right-3 bg-[#B7860B] text-white text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full shadow-md">
+          📖 Book Series
+        </span>
+      )}
     </div>
 
-    <h3 className="text-2xl font-semibold mb-2 text-[#1E2A28]">{title}</h3>
+    <h3 className="text-2xl font-semibold mb-1 text-[#1E2A28]">{title}</h3>
+
+    {isSeries && seriesName && (
+      <p className="text-xs text-[#4E7C68] font-bold mb-2">
+        Part of the &quot;{seriesName}&quot; series
+      </p>
+    )}
 
     <div className="flex items-center justify-between mb-3 text-sm font-medium">
       <span className="text-[#B7860B]">{genre}</span>
@@ -58,10 +83,10 @@ const WritingCard = ({
     </p>
 
     <Link
-      href={`/writings/${storyId}`}
-      className="text-[#B7860B] font-medium hover:underline self-start mt-auto"
+      href={`/writings/${storyId}?reader=true`}
+      className="inline-flex items-center px-4 py-2 bg-[#4E7C68] hover:bg-[#1E2A28] text-white text-xs font-semibold rounded-lg transition duration-200 shadow-sm mt-auto self-start"
     >
-      Read More
+      Read Now
     </Link>
   </div>
 );
@@ -75,20 +100,64 @@ const FeaturedWritings = () => {
       setIsLoading(true);
       try {
         const response = await axios.get("/api/stories/fetch-data");
-        const stories: Story[] = response.data.stories
-          .map((s: any) => ({
-            _id: s._id,
-            title: s.title,
-            description: s.description,
-            genre: s.category || "uncategorized",
-            coverImage: s.coverImage,
-            isFeatured: s.isFeatured,
-            averageRating: s.averageRating || 4.2,
-            ratingCount: s.ratingCount || 78,
-          }))
-          // The API already sorts by newest first (createdAt: -1).
-          // We simply slice the top 3 stories.
-          .slice(0, 3);
+        const allStories: any[] = response.data.stories || [];
+        
+        // Filter only stories that are part of a series
+        const seriesStories = allStories.filter((s: any) => s.isSeries && s.seriesName);
+        
+        // Group by seriesName
+        const groups: { [key: string]: any[] } = {};
+        seriesStories.forEach((s: any) => {
+          const name = s.seriesName.trim();
+          if (!groups[name]) {
+            groups[name] = [];
+          }
+          groups[name].push(s);
+        });
+        
+        // For each series, identify the 1st release (oldest chapter) and the latest chapter date
+        const uniqueSeriesList = Object.keys(groups).map((name) => {
+          const chapters = groups[name];
+          // Sort ascending by creation time to find the oldest (1st release)
+          const sortedAsc = [...chapters].sort(
+            (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+          const firstRelease = sortedAsc[0];
+          
+          // Find the latest update date among all chapters in this series
+          const sortedDesc = [...chapters].sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+          const lastUpdated = new Date(sortedDesc[0].createdAt).getTime();
+          
+          return {
+            firstRelease,
+            lastUpdated,
+          };
+        });
+        
+        // Sort series by their last update time descending (newest series / updates first)
+        uniqueSeriesList.sort((a, b) => b.lastUpdated - a.lastUpdated);
+        
+        // Map the first release of the top 3 series
+        const stories: Story[] = uniqueSeriesList
+          .slice(0, 3)
+          .map((item) => {
+            const s = item.firstRelease;
+            return {
+              _id: s._id,
+              title: s.title,
+              description: s.description,
+              genre: s.category || "uncategorized",
+              coverImage: s.coverImage,
+              isFeatured: s.isFeatured,
+              averageRating: s.averageRating || 4.2,
+              ratingCount: s.ratingCount || 78,
+              isSeries: s.isSeries,
+              seriesName: s.seriesName,
+            };
+          });
+          
         setRecentStories(stories);
       } catch (error) {
         console.error("Failed to fetch stories:", error);
@@ -125,7 +194,7 @@ const FeaturedWritings = () => {
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             ></path>
           </svg>
-          Loading recent writings...
+          Loading recent series...
         </div>
       </section>
     );
@@ -135,7 +204,7 @@ const FeaturedWritings = () => {
     return (
       <section className="pt-12 rounded-t-3xl">
         <div className="max-w-6xl mx-auto px-8 text-center text-[#3A3A37] py-16">
-          <p className="text-xl">No published stories found yet. Check back later!</p>
+          <p className="text-xl">No published book series found yet. Check back later!</p>
         </div>
       </section>
     );
@@ -146,10 +215,10 @@ const FeaturedWritings = () => {
       <div className="max-w-6xl mx-auto px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-[#1E2A28] to-[#4E7C68] bg-clip-text text-transparent mb-4 pb-2">
-            Recent Stories
+            Recent Series
           </h2>
           <p className="text-lg text-[#3A3A37] max-w-3xl mx-auto">
-            Check out the newest additions to The Verse. These are the latest tales fresh off the press.
+            Explore the latest book series in The Verse. Start reading from the very first chapter.
           </p>
         </div>
 
@@ -164,6 +233,8 @@ const FeaturedWritings = () => {
               storyId={writing._id}
               averageRating={writing.averageRating}
               ratingCount={writing.ratingCount}
+              isSeries={writing.isSeries}
+              seriesName={writing.seriesName}
             />
           ))}
         </div>

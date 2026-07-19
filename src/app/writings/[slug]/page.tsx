@@ -438,6 +438,8 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
 
   const [prevChapter, setPrevChapter] = useState<any>(null);
   const [nextChapter, setNextChapter] = useState<any>(null);
+  const [allChapters, setAllChapters] = useState<any[]>([]);
+  const [isReadingFullBook, setIsReadingFullBook] = useState(false);
 
   const handleCommentPosted = (newComments: Comment[]) => {
     setStory((prevStory) => {
@@ -535,8 +537,14 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
     }
   };
 
+  const handleCloseReader = () => {
+    setIsReaderModalOpen(false);
+    router.replace(`/writings/${storyId}`);
+  };
+
   const handleCloseAndScrollToComments = () => {
     setIsReaderModalOpen(false);
+    router.replace(`/writings/${storyId}`);
     setTimeout(() => {
       commentSectionRef.current?.scrollIntoView({
         behavior: "smooth",
@@ -644,6 +652,8 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
                 .filter((s: any) => s.isSeries && s.seriesName === fetchedStory.seriesName && s.isPublished)
                 .sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
               
+              setAllChapters(seriesStories);
+
               const currentIndex = seriesStories.findIndex((s: any) => s._id === fetchedStory._id);
               if (currentIndex !== -1) {
                 if (currentIndex > 0) {
@@ -664,6 +674,7 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
         } else {
           setPrevChapter(null);
           setNextChapter(null);
+          setAllChapters([]);
         }
 
       } catch (err: any) {
@@ -714,7 +725,7 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
           <div className="min-h-screen flex justify-center px-4 sm:px-8 py-10">
             <div className="relative w-full max-w-4xl bg-white rounded-2xl shadow-[0_30px_80px_rgba(0,0,0,0.65)] px-8 sm:px-12 py-10 sm:py-12">
               <button
-                onClick={() => setIsReaderModalOpen(false)}
+                onClick={handleCloseReader}
                 className="absolute top-5 right-5 p-2 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-900 transition"
                 aria-label="Close reader view"
               >
@@ -769,7 +780,7 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
 
               <div className="mt-10 pt-4 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <button
-                  onClick={() => setIsReaderModalOpen(false)}
+                  onClick={handleCloseReader}
                   className="inline-flex items-center justify-center px-6 py-2.5 bg-gray-100 text-[#1E2A28] rounded-lg hover:bg-gray-200 transition duration-200 text-sm"
                 >
                   Close
@@ -786,6 +797,76 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
                     React & Comment
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Full Book Reader Mode Modal */}
+      {story && isReadingFullBook && allChapters.length > 0 && (
+        <div className="fixed inset-0 z-[60] bg-[#050816]/95 backdrop-blur-sm overflow-y-auto">
+          <div className="min-h-screen flex justify-center px-4 sm:px-8 py-10">
+            <div className="relative w-full max-w-4xl bg-white rounded-2xl shadow-[0_30px_80px_rgba(0,0,0,0.65)] px-8 sm:px-12 py-10 sm:py-12">
+              <button
+                onClick={() => setIsReadingFullBook(false)}
+                className="absolute top-5 right-5 p-2 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-900 transition"
+                aria-label="Close reader view"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="text-center mb-10 pb-6 border-b border-gray-200">
+                <span className="text-xs uppercase tracking-widest font-bold text-[#B7860B]">
+                  Complete Book Collection
+                </span>
+                <h1
+                  className={`${playfair.variable} font-playfair text-3xl sm:text-5xl font-bold text-[#1E2A28] mt-2 mb-3`}
+                >
+                  {story.seriesName}
+                </h1>
+                <p className="text-sm text-[#3A3A37]">
+                  A series of {allChapters.length} chapters • Written by {story.author}
+                </p>
+              </div>
+
+              {/* Sequential Chapters Rendering */}
+              <div className="space-y-20">
+                {allChapters.map((chapter, idx) => (
+                  <div key={chapter._id} className="chapter-section">
+                    <div className="flex flex-col items-center mb-8">
+                      <div className="w-12 h-[1px] bg-[#B7860B] mb-4" />
+                      <h2 className={`${playfair.variable} font-playfair text-2xl sm:text-3xl font-bold text-[#1E2A28] text-center`}>
+                        Chapter {idx + 1}: {chapter.title}
+                      </h2>
+                      <span className="text-xs text-gray-400 mt-1">
+                        Released on {formatDate(chapter.createdAt)}
+                      </span>
+                    </div>
+
+                    <div
+                      className="max-w-[60ch] w-full mx-auto text-lg leading-relaxed text-[#1E2A28] font-serif tracking-wide story-content break-words"
+                      dangerouslySetInnerHTML={{ __html: prepareContentForRender(chapter.content) }}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* End of Book Section */}
+              <div className="flex flex-col items-center justify-center mt-20 pt-10 border-t border-gray-200 text-center">
+                <div className="w-16 h-16 rounded-full bg-[#FDF4E2] border border-[#E3D8B5] flex items-center justify-center text-2xl mb-4">
+                  📖
+                </div>
+                <h3 className="text-xl font-bold text-[#1E2A28]">You&apos;ve read the full book!</h3>
+                <p className="text-sm text-gray-500 max-w-sm mt-1 mb-6">
+                  Thank you for completing the collection of &quot;{story.seriesName}&quot;.
+                </p>
+                <button
+                  onClick={() => setIsReadingFullBook(false)}
+                  className="px-6 py-2.5 bg-[#4E7C68] text-white rounded-lg hover:bg-[#1E2A28] transition duration-200 text-sm font-semibold"
+                >
+                  Return to Details Page
+                </button>
               </div>
             </div>
           </div>
@@ -839,13 +920,23 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
 
         {/* Action bar */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-10">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={() => setIsReaderModalOpen(true)}
               className="px-4 py-2 text-sm sm:text-base font-semibold rounded-lg bg-[#4E7C68] text-white hover:bg-[#1E2A28] transition duration-200 shadow-sm"
             >
               Open Reader Mode
             </button>
+            
+            {story.isSeries && allChapters.length > 1 && (
+              <button
+                onClick={() => setIsReadingFullBook(true)}
+                className="px-4 py-2 text-sm sm:text-base font-semibold rounded-lg bg-[#B7860B] text-white hover:bg-[#996C08] transition duration-200 shadow-sm"
+              >
+                Read Full Book ({allChapters.length} Chapters)
+              </button>
+            )}
+
             <span className="text-xs sm:text-sm text-[#3A3A37] italic">
               Distraction-free, doc-style reading.
             </span>
