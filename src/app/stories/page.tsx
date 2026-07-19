@@ -26,13 +26,14 @@ interface Story {
 
 export default function StoriesPage() {
     const { data: session, status } = useSession();
+    const nextAuthToken = (session as any)?.token as string | undefined;
+
     const [user,setUser] = useState<{isAdmin: boolean }| null>(null)
     const [stories, setStories] = useState<Story[]>([]);
     const [loading, setLoading] = useState(true);
 
      useEffect(() => {
         const checkAuth = async () => {
-          const nextAuthToken = (session as any)?.token;
           const config = nextAuthToken
             ? { headers: { Authorization: `Bearer ${nextAuthToken}` } }
             : {};
@@ -46,13 +47,12 @@ export default function StoriesPage() {
         if (status !== 'loading') {
         checkAuth();
         }
-    }, [status , session]);
+    }, [status, nextAuthToken]);
 
 
     useEffect(()=>{
       const fetchStories = async () => {
         setLoading(true);
-        const nextAuthToken = (session as any)?.token;
         const config = nextAuthToken ? { headers: { Authorization: `Bearer ${nextAuthToken}` } } : {};
         try {
           const response = await axios.get('/api/stories/fetch-data',config);
@@ -80,8 +80,10 @@ export default function StoriesPage() {
           setLoading(false);
         }
       }
-      fetchStories();
-    },[session])
+      if (status !== 'loading') {
+        fetchStories();
+      }
+    },[status, nextAuthToken])
 
     if (status === 'loading' || loading) {
         return (

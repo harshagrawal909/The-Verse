@@ -677,7 +677,7 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
     };
 
     fetchUserAndStory();
-  }, [storyId, status, session, nextAuthToken]);
+  }, [storyId, status, nextAuthToken]);
 
   if (isLoading) {
     return (
