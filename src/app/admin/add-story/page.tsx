@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CloudUpload,X } from 'lucide-react';
 import RichTextEditor from '../../../app/components/RichTextEditor';
 
@@ -35,7 +35,7 @@ const useAddStoryForm = () => {
   const [isCreatingNewSeries, setIsCreatingNewSeries] = useState<boolean>(true);
 
   // Fetch existing series names for the dropdown
-  useState(() => {
+  useEffect(() => {
     const fetchSeries = async () => {
       try {
         const response = await fetch('/api/stories/fetch-data');
@@ -58,7 +58,7 @@ const useAddStoryForm = () => {
       }
     };
     fetchSeries();
-  });
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;

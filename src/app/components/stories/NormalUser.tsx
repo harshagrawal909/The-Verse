@@ -23,7 +23,7 @@ const WritingCard = ({ title, genre, description, image, storyId, isSeries, seri
   <div className="bg-[#FDF4E2] text-[#1E2A28] p-6 rounded-2xl shadow-lg flex flex-col border border-[#E3D8B5] transition duration-300 hover:shadow-xl hover:-translate-y-1">
     
     
-    <div className="w-full h-48 mb-4 rounded-md overflow-hidden">
+    <div className="w-full aspect-video mb-4 rounded-md overflow-hidden bg-gray-100">
       <img 
         src={image} 
         alt={title} 
@@ -35,7 +35,7 @@ const WritingCard = ({ title, genre, description, image, storyId, isSeries, seri
 
     {isSeries && seriesName && (
       <p className="text-sm font-medium text-[#4E7C68] mb-1">
-        Part of the **{seriesName}** series
+        Part of the <span className="font-bold">{seriesName}</span> series
       </p>
     )}
 

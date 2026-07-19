@@ -26,7 +26,7 @@ interface AdminProps {
 const AdminCard = ({ story }: { story: Story }) => (
   <div className="bg-[#FDF4E2] text-[#1E2A28] p-4 rounded-xl shadow-lg flex flex-col border border-[#E3D8B5] transition duration-300 hover:shadow-xl hover:-translate-y-1">
     
-    <div className="w-full h-40 mb-3 rounded-md overflow-hidden">
+    <div className="w-full aspect-video mb-3 rounded-md overflow-hidden bg-gray-100">
       <img 
         src={story.coverImage} 
         alt={story.title} 
@@ -38,7 +38,7 @@ const AdminCard = ({ story }: { story: Story }) => (
 
     {story.isSeries && story.seriesName && (
       <p className="text-xs font-medium text-[#4E7C68] mb-1 truncate">
-        Series: **{story.seriesName}**
+        Series: <span className="font-bold">{story.seriesName}</span>
       </p>
     )}
 
