@@ -1,5 +1,209 @@
 @import "tailwindcss";
 
+/* ===== Story Content Typography ===== */
+/* Styles for rendered HTML content from the rich text editor */
+.story-content h1 {
+  font-size: 2em;
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-bottom: 0.6em;
+  line-height: 1.3;
+  color: #1E2A28;
+}
+
+.story-content h2 {
+  font-size: 1.6em;
+  font-weight: 700;
+  margin-top: 1.4em;
+  margin-bottom: 0.5em;
+  line-height: 1.35;
+  color: #1E2A28;
+}
+
+.story-content h3 {
+  font-size: 1.3em;
+  font-weight: 600;
+  margin-top: 1.2em;
+  margin-bottom: 0.4em;
+  line-height: 1.4;
+  color: #1E2A28;
+}
+
+.story-content p {
+  margin-bottom: 1.2em;
+  line-height: 1.8;
+}
+
+.story-content strong,
+.story-content b {
+  font-weight: 700;
+  color: #1E2A28;
+}
+
+.story-content em,
+.story-content i {
+  font-style: italic;
+}
+
+.story-content u {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.story-content s {
+  text-decoration: line-through;
+}
+
+.story-content ul {
+  list-style-type: disc;
+  padding-left: 2em;
+  margin-bottom: 1.2em;
+}
+
+.story-content ol {
+  list-style-type: decimal;
+  padding-left: 2em;
+  margin-bottom: 1.2em;
+}
+
+.story-content li {
+  margin-bottom: 0.4em;
+  line-height: 1.7;
+}
+
+.story-content blockquote {
+  border-left: 4px solid #B7860B;
+  padding-left: 1.2em;
+  margin: 1.5em 0;
+  font-style: italic;
+  color: #4E7C68;
+  background-color: rgba(183, 134, 11, 0.05);
+  padding: 0.8em 1.2em;
+  border-radius: 0 8px 8px 0;
+}
+
+.story-content pre {
+  background-color: #1E2A28;
+  color: #E3D8B5;
+  padding: 1em 1.2em;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1.5em 0;
+  font-family: "Geist Mono", monospace;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+
+.story-content code {
+  background-color: rgba(30, 42, 40, 0.08);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-family: "Geist Mono", monospace;
+  font-size: 0.9em;
+}
+
+.story-content pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.story-content a {
+  color: #B7860B;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+
+.story-content a:hover {
+  color: #996C08;
+}
+
+.story-content .ql-align-center {
+  text-align: center;
+}
+
+.story-content .ql-align-right {
+  text-align: right;
+}
+
+.story-content .ql-align-justify {
+  text-align: justify;
+}
+
+/* ===== Rich Text Editor Styling ===== */
+/* Override Quill editor styles to match The Verse design */
+.rich-text-editor .ql-toolbar.ql-snow {
+  border: 1px solid #E3D8B5;
+  border-radius: 8px 8px 0 0;
+  background-color: #FEF8EC;
+  font-family: inherit;
+}
+
+.rich-text-editor .ql-container.ql-snow {
+  border: 1px solid #E3D8B5;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  background-color: #FFFFFF;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 300px;
+}
+
+.rich-text-editor .ql-editor {
+  min-height: 300px;
+  color: #1E2A28;
+  line-height: 1.8;
+}
+
+.rich-text-editor .ql-editor.ql-blank::before {
+  color: #3A3A37;
+  opacity: 0.5;
+  font-style: italic;
+}
+
+.rich-text-editor .ql-snow .ql-stroke {
+  stroke: #3A3A37;
+}
+
+.rich-text-editor .ql-snow .ql-fill,
+.rich-text-editor .ql-snow .ql-stroke.ql-fill {
+  fill: #3A3A37;
+}
+
+.rich-text-editor .ql-snow .ql-picker {
+  color: #1E2A28;
+}
+
+.rich-text-editor .ql-snow button:hover,
+.rich-text-editor .ql-snow button:focus,
+.rich-text-editor .ql-snow .ql-picker-label:hover,
+.rich-text-editor .ql-snow .ql-picker-item:hover {
+  color: #B7860B !important;
+}
+
+.rich-text-editor .ql-snow button:hover .ql-stroke,
+.rich-text-editor .ql-snow button:focus .ql-stroke {
+  stroke: #B7860B !important;
+}
+
+.rich-text-editor .ql-snow button:hover .ql-fill,
+.rich-text-editor .ql-snow button:focus .ql-fill {
+  fill: #B7860B !important;
+}
+
+.rich-text-editor .ql-snow button.ql-active,
+.rich-text-editor .ql-snow .ql-picker-label.ql-active {
+  color: #B7860B !important;
+}
+
+.rich-text-editor .ql-snow button.ql-active .ql-stroke {
+  stroke: #B7860B !important;
+}
+
+.rich-text-editor .ql-snow button.ql-active .ql-fill {
+  fill: #B7860B !important;
+}
+
 
 
 

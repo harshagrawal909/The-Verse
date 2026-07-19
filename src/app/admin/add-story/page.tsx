@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { CloudUpload,X } from 'lucide-react';
+import RichTextEditor from '../../../app/components/RichTextEditor';
 
 interface NewStory {
   title: string;
@@ -156,9 +157,14 @@ const useAddStoryForm = () => {
         }
     };
 
+  const handleFullTextChange = (value: string) => {
+    setStoryData(prev => ({ ...prev, fullText: value }));
+  };
+
   return {
     storyData,
     handleChange,
+    handleFullTextChange,
     setStatus,
     handleFileChange,
     handleSubmit,
@@ -204,7 +210,7 @@ const FormTextarea = ({ label, name, placeholder, value, onChange, rows = 4 }) =
 );
 
 function AddStoryComponent() {
-  const { storyData, handleChange, setStatus, handleFileChange, handleSubmit, setTags, isLoading, error } = useAddStoryForm();
+  const { storyData, handleChange, handleFullTextChange, setStatus, handleFileChange, handleSubmit, setTags, isLoading, error } = useAddStoryForm();
   const [isDragging, setIsDragging] = useState(false);
   const [tagInputValue, setTagInputValue] = useState('');
   
@@ -369,14 +375,16 @@ function AddStoryComponent() {
                 />
                 <div className='border-b border-[#E3D8B5] my-10 '></div>
 
-                <FormTextarea
-                    label="Full Story Content"
-                    name="fullText"
-                    placeholder="Write your full story here..."
-                    value={storyData.fullText}
-                    onChange={handleChange}
-                    rows={15}
-                />
+                <div className="mb-6">
+                    <label className="block text-lg font-medium text-[#1E2A28] mb-2">
+                        Full Story Content
+                    </label>
+                    <RichTextEditor
+                        value={storyData.fullText}
+                        onChange={handleFullTextChange}
+                        placeholder="Write your full story here... Use the toolbar to format text."
+                    />
+                </div>
                 <div className='border-b border-[#E3D8B5] my-10 '></div>
 
                 <label className="block text-lg font-medium text-[#1E2A28] mb-2">Cover Image</label>

@@ -5,6 +5,7 @@ import axios from "axios";
 import { Playfair_Display } from "next/font/google";
 import { useSession } from "next-auth/react";
 import { Send, Edit, Trash2, X, Camera } from "lucide-react"; // Added Camera
+import DOMPurify from "dompurify";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -102,6 +103,19 @@ const formatDate = (dateString: string) => {
     month: "long",
     day: "numeric",
   });
+};
+
+// Helper: detect if content is HTML or plain text, and prepare for safe rendering
+const prepareContentForRender = (content: string): string => {
+  // Check if content contains HTML tags (from rich text editor)
+  const hasHtmlTags = /<[a-z][\s\S]*>/i.test(content);
+  if (hasHtmlTags) {
+    // Content is HTML from the rich text editor — sanitize it
+    return DOMPurify.sanitize(content);
+  }
+  // Content is plain text (old stories) — convert newlines to <br> and wrap in paragraphs
+  const paragraphs = content.split("\n").filter((p) => p.trim().length > 0);
+  return paragraphs.map((p) => `<p>${p}</p>`).join("");
 };
 
 interface CommentComponentProps {
@@ -668,13 +682,10 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
                 {readingTime > 0 ? `~${readingTime} min read` : ""}
               </p>
 
-              <div className="max-w-[60ch] mx-auto text-lg leading-relaxed text-[#1E2A28] font-serif tracking-wide">
-                {story.content.split("\n").map((paragraph, index) => (
-                  <p key={index} className="mb-6">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
+              <div
+                className="max-w-[60ch] mx-auto text-lg leading-relaxed text-[#1E2A28] font-serif tracking-wide story-content"
+                dangerouslySetInnerHTML={{ __html: prepareContentForRender(story.content) }}
+              />
 
               <div className="mt-10 pt-4 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <button
@@ -775,12 +786,8 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
 
         {/* Story body – continuous scroll */}
         <section className="mb-16">
-          <div className="max-w-[70ch] mx-auto text-base sm:text-lg text-[#3A3A37] leading-relaxed font-serif tracking-wide prose">
-            {story.content.split("\n").map((paragraph, index) => (
-              <p key={index} className="mb-6 indent-8">
-                {paragraph}
-              </p>
-            ))}
+          <div className="max-w-[70ch] mx-auto text-base sm:text-lg text-[#3A3A37] leading-relaxed font-serif tracking-wide story-content">
+            <div dangerouslySetInnerHTML={{ __html: prepareContentForRender(story.content) }} />
           </div>
         </section>
 

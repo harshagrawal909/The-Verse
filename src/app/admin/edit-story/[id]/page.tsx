@@ -5,6 +5,7 @@ import { CloudUpload,X } from 'lucide-react';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import RichTextEditor from '../../../../app/components/RichTextEditor';
 
 
 interface NewStory {
@@ -263,9 +264,14 @@ const useEditStoryForm = (storyId: string) => {
     }
     
 
+    const handleFullTextChange = (value: string) => {
+        setStoryData(prev => ({ ...prev, fullText: value }));
+    };
+
     return {
         storyData,
         handleChange,
+        handleFullTextChange,
         setStatus,
         handleFileChange,
         handleUpdate, 
@@ -281,6 +287,7 @@ function EditStoryComponent({ storyId }: { storyId: string }) {
     const { 
         storyData, 
         handleChange, 
+        handleFullTextChange,
         setStatus, 
         handleFileChange, 
         handleUpdate, 
@@ -489,15 +496,17 @@ function EditStoryComponent({ storyId }: { storyId: string }) {
                         />
                         <div className='border-b border-[#E3D8B5] my-10 '></div>
 
-                        {/* Full Content Textarea */}
-                        <FormTextarea
-                            label="Full Story Content"
-                            name="fullText"
-                            placeholder="Write your full story here..."
-                            value={storyData.fullText}
-                            onChange={handleChange}
-                            rows={15}
-                        />
+                        {/* Full Content Rich Text Editor */}
+                        <div className="mb-6">
+                            <label className="block text-lg font-medium text-[#1E2A28] mb-2">
+                                Full Story Content
+                            </label>
+                            <RichTextEditor
+                                value={storyData.fullText}
+                                onChange={handleFullTextChange}
+                                placeholder="Write your full story here... Use the toolbar to format text."
+                            />
+                        </div>
                         <div className='border-b border-[#E3D8B5] my-10 '></div>
 
                         {/* Cover Image UPLOAD / PREVIEW */}

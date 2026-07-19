@@ -12,17 +12,20 @@
     "@vercel/blob": "^2.0.0",
     "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",
+    "dompurify": "^3.4.12",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.546.0",
     "mongoose": "^8.19.2",
     "next": "15.5.7",
     "next-auth": "^4.24.11",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-quill-new": "^3.8.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/dompurify": "^3.0.5",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20.19.24",
     "@types/react": "^19",
