@@ -6,6 +6,8 @@ import { Playfair_Display } from "next/font/google";
 import { useSession } from "next-auth/react";
 import { Send, Edit, Trash2, X, Camera } from "lucide-react"; // Added Camera
 import DOMPurify from "dompurify";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -431,6 +433,12 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
 
   const nextAuthToken = (session as any)?.token as string | undefined;
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [prevChapter, setPrevChapter] = useState<any>(null);
+  const [nextChapter, setNextChapter] = useState<any>(null);
+
   const handleCommentPosted = (newComments: Comment[]) => {
     setStory((prevStory) => {
       if (!prevStory) return null;
@@ -537,6 +545,15 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
     }, 100);
   };
 
+  // Auto-open reader mode if url contains reader=true
+  useEffect(() => {
+    if (searchParams.get('reader') === 'true') {
+      setIsReaderModalOpen(true);
+    } else {
+      setIsReaderModalOpen(false);
+    }
+  }, [searchParams, storyId]);
+
   // Calculate reading time
   useEffect(() => {
     if (story?.content) {
@@ -617,6 +634,38 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
 
         setUserRating(userRatingData?.rating || 0);
         setRatingMessage("");
+
+        // Fetch other chapters in the same series to calculate prev/next links
+        if (fetchedStory.isSeries && fetchedStory.seriesName) {
+          try {
+            const allStoriesRes = await axios.get('/api/stories/fetch-data');
+            if (allStoriesRes.data.stories) {
+              const seriesStories = allStoriesRes.data.stories
+                .filter((s: any) => s.isSeries && s.seriesName === fetchedStory.seriesName && s.isPublished)
+                .sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+              
+              const currentIndex = seriesStories.findIndex((s: any) => s._id === fetchedStory._id);
+              if (currentIndex !== -1) {
+                if (currentIndex > 0) {
+                  setPrevChapter(seriesStories[currentIndex - 1]);
+                } else {
+                  setPrevChapter(null);
+                }
+                if (currentIndex < seriesStories.length - 1) {
+                  setNextChapter(seriesStories[currentIndex + 1]);
+                } else {
+                  setNextChapter(null);
+                }
+              }
+            }
+          } catch (err) {
+            console.error("Failed to fetch series chapters:", err);
+          }
+        } else {
+          setPrevChapter(null);
+          setNextChapter(null);
+        }
+
       } catch (err: any) {
         console.error("Failed to fetch story:", err);
         const message =
@@ -686,6 +735,37 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
                 className="max-w-[60ch] w-full mx-auto text-lg leading-relaxed text-[#1E2A28] font-serif tracking-wide story-content break-words"
                 dangerouslySetInnerHTML={{ __html: prepareContentForRender(story.content) }}
               />
+
+              {/* Previous / Next Chapter Navigation (Reader Mode) */}
+              {(prevChapter || nextChapter) && (
+                <div className="flex justify-between items-center border-t border-[#E3D8B5] mt-10 pt-6 gap-4">
+                  {prevChapter ? (
+                    <button
+                      onClick={() => {
+                        router.push(`/writings/${prevChapter._id}?reader=true`);
+                      }}
+                      className="flex items-center text-sm font-bold text-[#4E7C68] hover:text-[#1E2A28] transition cursor-pointer"
+                    >
+                      ← Prev: {prevChapter.title}
+                    </button>
+                  ) : (
+                    <span className="text-gray-400 text-xs sm:text-sm">First Chapter</span>
+                  )}
+
+                  {nextChapter ? (
+                    <button
+                      onClick={() => {
+                        router.push(`/writings/${nextChapter._id}?reader=true`);
+                      }}
+                      className="flex items-center text-sm font-bold text-[#B7860B] hover:text-[#996C08] transition text-right cursor-pointer"
+                    >
+                      Next: {nextChapter.title} →
+                    </button>
+                  ) : (
+                    <span className="text-gray-400 text-xs sm:text-sm">Last Chapter</span>
+                  )}
+                </div>
+              )}
 
               <div className="mt-10 pt-4 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <button
@@ -791,6 +871,33 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
             dangerouslySetInnerHTML={{ __html: prepareContentForRender(story.content) }} 
           />
         </section>
+
+        {/* Previous / Next Chapter Navigation (Normal Mode) */}
+        {(prevChapter || nextChapter) && (
+          <div className="flex justify-between items-center max-w-[70ch] mx-auto mb-12 border-t border-b border-[#E3D8B5] py-4 gap-4">
+            {prevChapter ? (
+              <Link
+                href={`/writings/${prevChapter._id}`}
+                className="flex items-center text-xs sm:text-sm font-semibold text-[#4E7C68] hover:text-[#1E2A28] transition duration-200"
+              >
+                ← Prev: {prevChapter.title}
+              </Link>
+            ) : (
+              <span className="text-gray-400 text-xs sm:text-sm">First Chapter</span>
+            )}
+
+            {nextChapter ? (
+              <Link
+                href={`/writings/${nextChapter._id}`}
+                className="flex items-center text-xs sm:text-sm font-semibold text-[#B7860B] hover:text-[#996C08] transition duration-200 text-right"
+              >
+                Next: {nextChapter.title} →
+              </Link>
+            ) : (
+              <span className="text-gray-400 text-xs sm:text-sm">Last Chapter</span>
+            )}
+          </div>
+        )}
 
         {/* Ratings & Comments */}
         <section
