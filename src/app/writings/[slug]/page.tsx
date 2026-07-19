@@ -683,7 +683,7 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
               </p>
 
               <div
-                className="max-w-[60ch] mx-auto text-lg leading-relaxed text-[#1E2A28] font-serif tracking-wide story-content"
+                className="max-w-[60ch] w-full mx-auto text-lg leading-relaxed text-[#1E2A28] font-serif tracking-wide story-content break-words"
                 dangerouslySetInnerHTML={{ __html: prepareContentForRender(story.content) }}
               />
 
@@ -786,9 +786,10 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
 
         {/* Story body – continuous scroll */}
         <section className="mb-16">
-          <div className="max-w-[70ch] mx-auto text-base sm:text-lg text-[#3A3A37] leading-relaxed font-serif tracking-wide story-content">
-            <div dangerouslySetInnerHTML={{ __html: prepareContentForRender(story.content) }} />
-          </div>
+          <div 
+            className="max-w-[70ch] w-full mx-auto text-base sm:text-lg text-[#3A3A37] leading-relaxed font-serif tracking-wide story-content break-words"
+            dangerouslySetInnerHTML={{ __html: prepareContentForRender(story.content) }} 
+          />
         </section>
 
         {/* Ratings & Comments */}
