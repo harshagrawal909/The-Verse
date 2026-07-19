@@ -31,6 +31,35 @@ const useAddStoryForm = () => {
     seriesName: ''
   });
 
+  const [existingSeries, setExistingSeries] = useState<string[]>([]);
+  const [isCreatingNewSeries, setIsCreatingNewSeries] = useState<boolean>(true);
+
+  // Fetch existing series names for the dropdown
+  useState(() => {
+    const fetchSeries = async () => {
+      try {
+        const response = await fetch('/api/stories/fetch-data');
+        if (response.ok) {
+          const data = await response.json();
+          const series = Array.from(
+            new Set(
+              (data.stories || [])
+                .filter((s: any) => s.isSeries && s.seriesName)
+                .map((s: any) => s.seriesName.trim())
+            )
+          ) as string[];
+          setExistingSeries(series);
+          if (series.length > 0) {
+            setIsCreatingNewSeries(false);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch series names:", err);
+      }
+    };
+    fetchSeries();
+  });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     if (type === 'checkbox') {
@@ -161,6 +190,17 @@ const useAddStoryForm = () => {
     setStoryData(prev => ({ ...prev, fullText: value }));
   };
 
+  const handleSeriesSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value;
+    if (val === "__NEW__") {
+      setIsCreatingNewSeries(true);
+      setStoryData(prev => ({ ...prev, seriesName: '' }));
+    } else {
+      setIsCreatingNewSeries(false);
+      setStoryData(prev => ({ ...prev, seriesName: val }));
+    }
+  };
+
   return {
     storyData,
     handleChange,
@@ -169,6 +209,11 @@ const useAddStoryForm = () => {
     handleFileChange,
     handleSubmit,
     setTags,
+    existingSeries,
+    isCreatingNewSeries,
+    handleSeriesSelectChange,
+    setIsCreatingNewSeries,
+    setStoryData,
     isLoading,
     error
   };
@@ -210,7 +255,22 @@ const FormTextarea = ({ label, name, placeholder, value, onChange, rows = 4 }) =
 );
 
 function AddStoryComponent() {
-  const { storyData, handleChange, handleFullTextChange, setStatus, handleFileChange, handleSubmit, setTags, isLoading, error } = useAddStoryForm();
+  const { 
+    storyData, 
+    handleChange, 
+    handleFullTextChange, 
+    setStatus, 
+    handleFileChange, 
+    handleSubmit, 
+    setTags, 
+    existingSeries,
+    isCreatingNewSeries,
+    handleSeriesSelectChange,
+    setIsCreatingNewSeries,
+    setStoryData,
+    isLoading, 
+    error 
+  } = useAddStoryForm();
   const [isDragging, setIsDragging] = useState(false);
   const [tagInputValue, setTagInputValue] = useState('');
   
@@ -328,13 +388,37 @@ function AddStoryComponent() {
 
 
                 {storyData.isSeries && (
-                    <FormInput 
-                        label="Book Series Name"
-                        name="seriesName"
-                        placeholder="Enter the name of the book series (e.g., The Chronicle of Aethel)"
-                        value={storyData.seriesName}
-                        onChange={handleChange}
-                    />
+                    <div className="mb-6 space-y-4">
+                        {existingSeries.length > 0 && (
+                            <div>
+                                <label htmlFor="seriesSelect" className="block text-lg font-medium text-[#1E2A28] mb-2">
+                                    Select Book Series
+                                </label>
+                                <select
+                                    id="seriesSelect"
+                                    value={isCreatingNewSeries ? "__NEW__" : storyData.seriesName}
+                                    onChange={handleSeriesSelectChange}
+                                    className="w-full px-4 py-3 border border-[#E3D8B5] rounded-lg shadow-lg text-[#1E2A28] focus:ring-1 transition duration-200"
+                                >
+                                    <option value="">-- Select an Existing Series --</option>
+                                    {existingSeries.map(name => (
+                                        <option key={name} value={name}>{name}</option>
+                                    ))}
+                                    <option value="__NEW__">+ Add New Series...</option>
+                                </select>
+                            </div>
+                        )}
+
+                        {(isCreatingNewSeries || existingSeries.length === 0) && (
+                            <FormInput 
+                                label="New Book Series Name"
+                                name="seriesName"
+                                placeholder="Enter the name of the book series (e.g., The Chronicle of Aethel)"
+                                value={storyData.seriesName}
+                                onChange={handleChange}
+                            />
+                        )}
+                    </div>
                 )}
 
 
