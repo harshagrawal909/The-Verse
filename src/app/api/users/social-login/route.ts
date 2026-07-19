@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
             isAdmin: user.isAdmin
         };
 
-        const token = jwt.sign(tokenData, process.env.JWT_SECRET!, { expiresIn: "7d" });
+        const token = jwt.sign(tokenData, process.env.JWT_SECRET!, { expiresIn: "365d" });
         const response = NextResponse.json({
             message: status === 201 ? 'Signup successful' : 'Login successful',
             user: {
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
         response.cookies.set("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            maxAge: 7 * 24 * 60 * 60, 
+            maxAge: 365 * 24 * 60 * 60, // 1 year — session persists until explicit logout
             path: '/',
             sameSite: 'lax',
         });

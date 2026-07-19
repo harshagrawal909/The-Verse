@@ -34,8 +34,17 @@ export default function Header() {
             try {
                 const response = await axios.get('/api/users/me',config); 
                 setUser(response.data.user); 
-            } catch (error) {
-                setUser(null); 
+            } catch (error: any) {
+                setUser(null);
+                // If token is expired/invalid (401), proactively clear stale session
+                if (error?.response?.status === 401 && (status === 'authenticated' || document.cookie.includes('token='))) {
+                  try {
+                    await axios.post('/api/users/logout');
+                    await signOut({ redirect: false });
+                  } catch (logoutErr) {
+                    // Silent fail — cookies will be cleared by middleware on next navigation
+                  }
+                }
             }
         };
         if (status !== 'loading') { 
