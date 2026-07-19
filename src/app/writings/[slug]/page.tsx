@@ -146,7 +146,7 @@ const CommentComponent = ({
   const [editText, setEditText] = useState(comment.text);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const isOwner = currentUserId && comment.userId._id === currentUserId;
+  const isOwner = currentUserId && comment.userId && comment.userId._id === currentUserId;
 
   const config = sessionToken
     ? { headers: { Authorization: `Bearer ${sessionToken}` } }
@@ -246,13 +246,13 @@ const CommentComponent = ({
       <div className="flex items-center space-x-3 mb-2">
         {/* This checks the `profileImage` field populated by the API */}
         <img
-          src={comment.userId.profileImage || "/images/user-avatar.png"}
-          alt={comment.userId.name || comment.userId.username || "User"}
+          src={comment.userId?.profileImage || "/images/user-avatar.png"}
+          alt={comment.userId?.name || comment.userId?.username || "User"}
           className="w-8 h-8 rounded-full object-cover"
         />
         <div>
           <p className="font-semibold text-[#1E2A28] text-sm">
-            {comment.userId.name || comment.userId.username || "Anonymous User"}
+            {comment.userId ? (comment.userId.name || comment.userId.username || "Anonymous User") : "Deleted User"}
             {isOwner && (
               <span className="ml-2 text-xs text-indigo-500 font-normal">
                 (You)
